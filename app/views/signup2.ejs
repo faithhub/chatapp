@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Volbri Account</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="css/iofrm-theme2.css">
+    <link rel="stylesheet" href="build/css/intlTelInput.css">
+    <link rel="stylesheet" href="build/css/demo.css">
+    <style>
+        button {
+            outline: none;
+        }
+        
+        .btn2 {
+            font-weight: bolder;
+            border: 0;
+            border-color: white;
+            background-color: black;
+            cursor: pointer;
+            outline: none !important;
+            -webkit-appearance: none !important;
+        }
+        
+        .btn2:hover {
+            background-color: black;
+            color: yellow;
+            border: 0;
+            outline: none;
+            border-color: black;
+            cursor: pointer;
+        }
+        
+        .phoneForm {
+            background-color: white !important;
+            color: black !important;
+            font-weight: bold !important;
+        }
+        
+        .disabled {
+            cursor: no-drop !important;
+            border: 1px solid #999999 !important;
+            background-color: #fff !important;
+            color: black !important;
+        }
+        
+        .disabled2 {
+            cursor: no-drop !important;
+            background-color: black !important;
+        }
+        
+        .btn-success {
+            outline-color: #28a745 !important;
+            color: #fff !important;
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            border-radius: 7px !important;
+            text-decoration: none !important;
+            outline: 0;
+        }
+        
+        .ibtn2 {
+            background-color: #fff;
+            color: #23394A;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+            padding: 6px 15px;
+        }
+        
+        .loader {
+            width: 20px;
+            display: none;
+        }
+        
+        label.error {
+            color: red;
+        }
+        
+        .ibtn2:hover {
+            background-color: #fff;
+        }
+        
+        .error {
+            color: red;
+            font-weight: bolder;
+        }
+        
+        label.error {
+            font-weight: bolder;
+            font-family: cursive;
+        }
+        
+        #err {
+            margin: 0;
+        }
+        
+        .danger {
+            background-color: rgb(255, 102, 102) !important;
+            color: white !important;
+            font-weight: bolder !important;
+        }
+        
+        .success {
+            margin-top: 0;
+            color: green !important;
+            font-weight: bold;
+            padding-left: 3px;
+            display: inline;
+        }
+        
+        .error {
+            color: red;
+            margin-left: 5px;
+        }
+        
+        label.error {
+            display: inline;
+        }
+        
+        .err1 {
+            top: 100%;
+            z-index: 5;
+            max-width: 100%;
+            padding: .25rem .5rem;
+            margin-top: .1rem;
+            font-size: .875rem;
+            line-height: 0.7;
+            color: #fff;
+            background-color: rgba(40, 167, 69, .9);
+            border-radius: .25rem;
+        }
+        
+        .span {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-body" class="container-fluid">
+        <div class="row">
+
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <div class="text-center">
+                            <img class="web-logo" src="images/logo.png " alt="" style="width: 100px; height: auto;">
+                        </div>
+                        <h3>Get more things done with Volbri</h3>
+                        <p>Stay in touch! Free online calls, messaging, and instant online meetings on Volbri.</p>
+                        <div class="page-links">
+                            <a href="login">Login</a><a href="signup" class="active">Signup</a>
+                        </div>
+                        <form action="/register" method="POST" id="myform">
+                            <% if(messages.success){ %>
+                                <h4 class="success">
+                                    <%= messages.success %>
+                                </h4>
+                                <% }else if(messages.error){ %>
+                                    <h4 class="error">
+                                        <%= messages.error %>
+                                            <% } %>
+                                    </h4>
+                                    <h4 class="error" id="checkusername"></h4>
+
+                                    <div id="phoneDiv" class="p-2 row">
+                                        <label>Enter your Mobile Number</label>
+                                        <input id="phone" class="phoneForm" name="phone" type="tel">
+                                        <input type="hidden" name="phoneNumber" class="phoneNumber">
+                                        <input type="hidden" name="country" class="country">
+                                        <input type="hidden" name="countryCode" class="countryCode">
+                                        <div class="input-group-append text-right" id="getCode">
+                                            <button class="btn2">Get Code</button>
+                                        </div>
+                                        <span id="phoneError" class="error" style="padding-top: 5px;"></span>
+                                        <span id="mobileError" style="padding-top: 5px; color: red;"></span>
+                                        <span id="valid-msg" class="hide"></span><br>
+                                        <input type="text" class="otp" id="otpValue" name="mobile" placeholder="Enter Verification Code Here" style="margin-top: 15px; margin-bottom: 5px; max-width: 228px;">
+                                    </div>
+                                    <span id="otpError" class="error"></span>
+                                    <span id="codeSent" class="success span"></span>
+                                    <span id="codeSent2" class="error span"></span>
+
+                                    <div id="others" style="display: none;">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input class="form-control" type="text" id="username" name="username" value="<%= data.username %>" placeholder="Username">
+                                            <span class="usernameError span error"></span>
+                                            <% if (error.username) { %>
+                                                <label class="error"><%= error.username.msg %></label>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input class="form-control" type="text" id="fullName" name="fullName" value="<%= data.fullName %>" placeholder="Full Name">
+                                            <span class="fullNameError span"></span>
+                                            <% if (error.fullName) { %>
+                                                <label class="error"><%= error.fullName.msg %></label>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date of birth</label>
+                                            <input type="date" id="dob" name="dob" class="form-control">
+                                            <span class="dobError span"></span>
+                                            <% if (error.dob) { %>
+                                                <label class="error"><%= error.dob.msg %></label>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input class="form-control" value="<%= data.email %>" id="email" type="text" name="email" placeholder="E-mail Address">
+                                            <span class="emailError span"></span>
+                                            <% if (error.email) { %>
+                                                <label class="error"><%= error.email.msg %></label>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                                            <span class="passwordError span"></span>
+                                            <span class="passwordError2 span error">Password not Strong</span>
+                                            <% if (error.password) { %>
+                                                <label class="error"><%= error.password.msg %></label>
+                                                <% } %>
+                                                    <div class="passval" style="color: green; font-family: cursive; font-size: 13px; display:none;">
+                                                        <ul>
+                                                            <li>Password must have at least a number</li>
+                                                            <li>Password must have at least an alphanet</li>
+                                                            <li>Password must have at least one uppercase</li>
+                                                            <li>Password must have at least one lowercase</li>
+                                                            <li>Password must have at least one special character</li>
+                                                        </ul>
+                                                    </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input class="form-control" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                                            <span class="confirmPasswordError span"></span>
+                                            <% if (error.confirmPassword) { %>
+                                                <label class="error"><%= error.confirmPassword.msg %></label>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="form-button">
+                                        <button id="submit" class="btn btn-success" type="submit" style="display: none;">Register</button>
+                                        <button id="next" class="ibtn2"><img class="loader" id="loader" src="loader/check.gif">
+                                    <span id="check" class="check" style="font-weight: 700;">Checking...</span>
+                                    <strong class="hide">Submit</strong>
+                                    </button>
+                                    </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#fullName').bind('keyup blur', function() {
+                    var node = $(this);
+                    node.val(node.val().replace(/[^A-Za-z_\s]/, ''));
+                } // (/[^a-z]/g,''
+            );
+
+            $('#myform').validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 15
+                    },
+                    fullName: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 30
+                    },
+                    dob: {
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        maxlength: 30
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 15
+                    },
+                    confirmPassword: {
+                        required: true,
+                        minlength: 6,
+                        equalTo: "#password",
+                        maxlength: 15
+                    },
+                },
+                messages: {
+                    username: {
+                        required: "Username is required",
+                        minlength: "Username must not less than 3 character",
+                        maxlength: "Username must not exceed 15 character long"
+                    },
+                    fullName: {
+                        required: "Full Name is required",
+                        minlength: "Full Name must not less than 5 character",
+                        maxlength: "Full Name must not exceed 30 character long"
+                    },
+                    email: {
+                        required: "Email is required",
+                        email: "Please enter a valid email",
+                        maxlength: "Email must not exceed 30 character long"
+                    },
+                    dob: {
+                        required: "Date of Birth is required",
+                    },
+                    password: {
+                        required: "Password is required",
+                        maxlength: "Password must not exceed 15 character long",
+                        minlength: "Password must not less than 6 character long"
+                    },
+                    confirmPassword: {
+                        required: "Confirm Password is required",
+                        equalTo: "The Password must match"
+                    },
+                },
+                submitHandler: function(form) {
+                    $("#submit").attr("disabled", true).click(function(e) {
+                        e.preventDefault();
+                    });
+                    $("#ibtn2").show();
+                    $("#check").text("Signing Up...");
+                    form.submit();
+                }
+            });
+            $('#password').keyup(function() {
+                var pattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/);
+                var value = $('#password').val()
+                if (value.length > 6 && !pattern.test(value)) {
+                    console.log('good768')
+                    $('.passwordError2').removeClass('span').show().text('Password not Strong')
+                    $('.passval').show()
+                    $("#submit").attr("disabled", true)
+                } else if (value.length > 6 && pattern.test(value)) {
+                    $("#submit").attr("disabled", false);
+                    $('.passwordError2').hide()
+                    $('.passval').hide()
+                    console.log('good')
+                } else {
+                    $('.passval').hide()
+                }
+            })
+            $('#username').on('change', function() {
+                console.log($('#dob').val())
+                $.ajax({
+                    url: '/checkusername',
+                    type: 'post',
+                    data: {
+                        'username': function() {
+                            return $('#username').val();
+                        }
+                    },
+                    success: function(data) {
+                        if (data.success == true) {
+                            $("#submit").attr("disabled", false);
+                            $('.usernameError').hide()
+                        } else if (data.success == false) {
+                            $("#submit").attr("disabled", true)
+                            console.log('hhyu78')
+                            $('.usernameError').show().text('Username has been taken');
+                        }
+                    }
+                })
+            })
+
+        });
+
+
+        $('#phone').keyup(function() {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            if (this.value != '') {
+                $('#getCode').show();
+            } else {
+                $('#getCode').hide();
+            }
+        })
+
+        $('#otpValue').keyup(function() {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+            if ($(this).val().length >= 6) {
+                $(this).val($(this).val().substr(0, 6));
+            }
+            console.log(this.value)
+        })
+
+        $('.otp').hide();
+        $('#confirmPassword_error').text('');
+        $('#getCode').hide();
+        $('#others').hide();
+        $('#submit').hide();
+        $('#check').hide();
+
+        $('#next').addClass('disabled').attr('disabled', true)
+        $('#next').css('cursor', 'no-drop');
+
+        $('#otpValue').keyup(function() {
+            if (this.value.length <= 0) {
+                $('#next').addClass('disabled').removeClass('btn-success').attr('disabled', true)
+            } else {
+                $('#next').css(
+                    'cursor', 'pointer'
+                );
+                $('#next').removeClass('disabled').addClass('btn-success').attr('disabled', false)
+            }
+        })
+
+
+        $('#otpValue').keyup(function() {
+            $('#otpError').text('')
+        })
+
+        $('#next').click(function(e) {
+            e.preventDefault();
+            var code = $('#otpValue').val()
+            var mobile = $('.phoneNumber').val()
+            $('.check').show();
+            $('#loader').show();
+            $('.hide').hide();
+            $.ajax({
+                type: "POST",
+                url: '/verifycode',
+                data: {
+                    'code': code,
+                    'mobile': mobile
+                }, // serializes the form's elements.
+                success: function(data) {
+                    if (data.status == '200') {
+                        setTimeout(function() {
+                            $('#phoneDiv').hide();
+                            $('#submit').show();
+                            $('#next').hide();
+                            $('#others').show();
+                        }, 200)
+                    } else {
+                        setTimeout(function() {
+                            $('.check').hide();
+                            $('#loader').hide();
+                            $('.hide').show();
+                            $('#otpError').text('Wrong Verification code! try again dude');
+                        }, 200)
+                    }
+                }
+            })
+
+        })
+    </script>
+    <script src="build/js/intlTelInput.js"></script>
+    <script>
+        var input = document.querySelector("#phone"),
+            errorMsg = document.querySelector("#mobileError"),
+            validMsg = document.querySelector("#valid-msg");
+
+        // here, the index maps to the error code returned from getValidationError - see readme
+        var errorMap = ["Invalid Mobile number", "Invalid country code", "Phone number too Short! Not valid", "Phone number too long! Not valid", "Invalid number"];
+
+        // initialise plugin
+        var iti = window.intlTelInput(input, {
+            utilsScript: "build/js/utils.js"
+        });
+
+        var reset = function() {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+
+        $('.btn2').click(function(e) {
+                e.preventDefault();
+                console.log('yuaguasguyg')
+                if (iti.isValidNumber()) {
+                    $('.country').val(iti.getSelectedCountryData().name)
+                    $('.countryCode').val(iti.getSelectedCountryData().dialCode)
+                    $('.phoneNumber').val(iti.getNumber(intlTelInputUtils.numberFormat.E164))
+                    $.ajax({
+                        type: "POST",
+                        url: '/checkmobile',
+                        data: {
+                            'mobile': $('.phoneNumber').val()
+                        }, // serializes the form's elements.
+                        success: function(data) {
+                            console.log(data)
+                            if (data.status == 200) {
+                                $('.otp').show()
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/sendcode',
+                                    data: {
+                                        'mobile': $('.phoneNumber').val()
+                                    }, // serializes the form's elements.
+                                    success: function(data) {
+                                        $('.btn2').addClass('disabled2').attr('disabled', true)
+                                        console.log('data' + data)
+                                        if (data.status == 200) {
+                                            $('#codeSent').show().text('Verification code sent').fadeIn(1000).fadeOut(5000)
+                                        } else {
+                                            $('#codeSent2').show().text('Verification code not sent, try again').fadeIn(1000).fadeOut(5000)
+
+                                        }
+                                    }
+                                }).catch(
+                                    function(err) {
+                                        console.log(err)
+                                    }
+                                );
+                            } else {
+                                $('#phoneError').text('Phone Number has been Used')
+                            }
+                        }
+                    }).catch(
+                        function(err) {
+                            console.log(err)
+                        }
+                    );
+
+                }
+            })
+            // on blur: validate
+
+        input.addEventListener('blur', function() {
+            reset();
+            $('#phoneError').text('')
+            if (input.value.trim()) {
+                go = errorMap[errorCode];
+                if (iti.isValidNumber()) {
+                    validMsg.classList.remove("hide");
+                } else {
+                    input.classList.add("error");
+                    var errorCode = iti.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
+
+        // on keyup / change flag: reset
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
+    </script>
+</body>
+
+</html>

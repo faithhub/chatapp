@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login on Volbri</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="css/iofrm-theme2.css">
+    <link rel="stylesheet" href="build/css/intlTelInput.css">
+    <link rel="stylesheet" href="build/css/demo.css">
+    <style>
+        .error {
+            color: red;
+            margin-left: 5px;
+        }
+        
+        .disabled {
+            cursor: no-drop !important;
+            border: 1px solid #999999 !important;
+            background-color: #fff !important;
+            color: black !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-body" class="container-fluid">
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <div class="text-center">
+                            <img class="web-logo" src="/images/logo.png " alt="">
+                        </div>
+                        <h3>Go Volb the World. Chatting Made Easy</h3>
+                        <p>Stay in touch! Free online calls, messaging, and instant online meetings on Volbri.
+                        </p>
+                        <div class="page-links">
+                            <a href="login" class="active">Login</a><a href="signup">Signup</a>
+                        </div>
+                        <% if(messages.error){ %>
+                            <h4 class="error">
+                                <%= messages.error %>
+                                    <% } %>
+                            </h4>
+                            <h5 class="error" id="error2"></h5>
+                            <form action="/login" method="post" id="mylogin">
+                                <label>Enter your Mobile Number</label>
+                                <input type="hidden" name="phoneNumber" class="phoneNumber">
+                                <input id="phone" class="phoneForm" name="phone" type="tel" style="width: 340px; background-color: #ffffff; color: black; font-weight: bolder;">
+                                <span id="mobileError" style="padding-top: 5px; color: red;"></span>
+                                <span id="valid-msg" class="hide"></span><br>
+
+                                <div class="form-group mt-3">
+                                    <label>Password</label>
+                                    <input class="form-control" id="password" type="" name="password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" id="chk1"><label for="chk1">Remember This  Device</label>
+                                </div>
+                                <div class="form-button">
+                                    <button id="submit" type="submit" class="ibtn">Login</button>
+                                </div>
+                            </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#mylogin').validate({
+                rules: {
+                    phone: {
+                        required: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 15
+                    }
+                },
+                messages: {
+                    phone: {
+                        required: "Please enter your mobile number",
+                    },
+                    password: {
+                        required: "Password is required",
+                        maxlength: "Password must not exceed 15 character long",
+                        minlength: "Password must not less than 6 character long"
+                    }
+                },
+                submitHandler: function(form) {
+                    $("#submit").attr("disabled", true).click(function(e) {
+                        e.preventDefault();
+                    });
+                    $("#ibtn2").show();
+                    $("#check").text("Signing Up...");
+                    form.submit();
+                }
+            });
+        })
+    </script>
+    <script src="build/js/intlTelInput.js"></script>
+    <script>
+        $('#phone').keyup(function() {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+        })
+        $('#password').keyup(function() {
+            $('#password-error').hide()
+        })
+        var input = document.querySelector("#phone"),
+            errorMsg = document.querySelector("#mobileError"),
+            validMsg = document.querySelector("#valid-msg");
+
+        // here, the index maps to the error code returned from getValidationError - see readme
+        var errorMap = ["Invalid Mobile number", "Invalid country code", "Phone number too Short! Not valid", "Phone number too long! Not valid", "Invalid number"];
+
+        // initialise plugin
+        var iti = window.intlTelInput(input, {
+            utilsScript: "build/js/utils.js"
+        });
+
+        var reset = function() {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+
+        $('#phone').keyup(function() {
+            $('#error2').text('')
+            $('#submit').removeClass('disabled').attr('disabled', false)
+        })
+
+        $('#submit').on('click', function() {
+            var error5 = iti.getValidationError()
+            console.log($('#phone').val())
+            if ($('#phone').val() != '') {
+                if (!iti.isValidNumber() && error5 != 0) {
+                    console.log('bad')
+                    $('#submit').attr('disabled', true).addClass('disabled')
+                }
+            }
+        })
+
+        // on blur: validate
+        input.addEventListener('blur', function() {
+            reset();
+            $('#phoneError').text('')
+            if (input.value.trim()) {
+                go = errorMap[errorCode];
+                if (iti.isValidNumber()) {
+                    $('.phoneNumber').val(iti.getNumber(intlTelInputUtils.numberFormat.E164))
+                    validMsg.classList.remove("hide");
+                } else {
+                    input.classList.add("error");
+                    var errorCode = iti.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
+
+        // on keyup / change flag: reset
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
+    </script>
+</body>
+
+</html>
