@@ -54,15 +54,16 @@
                             </h4>
                             <h5 class="error" id="error2"></h5>
                             <form action="/login" method="post" id="mylogin">
-                                <label>Enter your Mobile Number</label>
+                                <label>Mobile Number</label>
                                 <input type="hidden" name="phoneNumber" class="phoneNumber">
                                 <input id="phone" class="phoneForm" name="phone" type="tel" style="width: 340px; background-color: #ffffff; color: black; font-weight: bolder;">
                                 <span id="mobileError" style="padding-top: 5px; color: red;"></span>
+                                <label id="phone-error" class="error" for="phone" style="display: none;">Please enter your mobile number</label>
                                 <span id="valid-msg" class="hide"></span><br>
 
                                 <div class="form-group mt-3">
                                     <label>Password</label>
-                                    <input class="form-control" id="password" type="" name="password" placeholder="Password">
+                                    <input class="form-control" id="password" type="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <input type="checkbox" id="chk1"><label for="chk1">Remember This  Device</label>

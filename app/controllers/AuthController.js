@@ -8,10 +8,13 @@ const authToken = process.env.AUTHTOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 exports.signup = function(req, res) {
-    res.render('signup2', { messages: {}, data: {}, error: {} });
+    res.render('signup', { messages: {}, data: {}, error: {} });
 }
-exports.home = function(req, res) {
-    res.render('home', { name: req.user })
+exports.dashboard = function(req, res) {
+    res.render('dashboard', { name: req.user })
+}
+exports.index = function(req, res) {
+    res.render('index')
 }
 exports.authenticate = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -92,7 +95,7 @@ exports.validateUsername = async function(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log(req.body);
-        res.render('signup2', { messages: {}, data: req.body, error: errors.mapped() })
+        res.render('signup', { messages: {}, data: req.body, error: errors.mapped() })
     } else {
         await Users.findAndCountAll({
                 where: {
@@ -103,7 +106,7 @@ exports.validateUsername = async function(req, res, next) {
                 console.log(result.count);
                 if (result.count > 0) {
                     console.log('one match')
-                    res.render('signup2', { messages: { 'usernameExist': 'Username already exist👻.' }, data: req.body, error: errors.mapped() })
+                    res.render('signup', { messages: { 'usernameExist': 'Username already exist👻.' }, data: req.body, error: errors.mapped() })
                 } else {
                     next()
                 }
@@ -137,7 +140,7 @@ exports.register = async function(req, res, next) {
 
     if (!errors.isEmpty()) {
         console.log(req.body);
-        res.render('signup2', { messages: {}, data: req.body, error: errors.mapped() })
+        res.render('signup', { messages: {}, data: req.body, error: errors.mapped() })
     } else {
         await Users.create({
             mobile: req.body.phoneNumber,
@@ -149,9 +152,9 @@ exports.register = async function(req, res, next) {
             dob: req.body.dob,
             password: await bcrypt.hash(req.body.password, 10)
         }).then(result => {
-            res.render('signup2', { messages: { 'success': 'Resgistered Successfully' }, data: {}, error: {} })
+            res.render('signup', { messages: { 'success': 'Resgistered Successfully' }, data: {}, error: {} })
         }).catch(err => {
-            res.render('signup2', { messages: { 'error': 'Error Occure! try again' }, data: req.body, error: errors.mapped() })
+            res.render('signup', { messages: { 'error': 'Error Occure! try again' }, data: req.body, error: errors.mapped() })
         });
     }
 }

@@ -7,7 +7,11 @@ router.get('/login', function(req, res, next) {
     res.render('login')
 })
 
-router.get('/home', AuthController.authenticate, AuthController.home)
+router.get('/dashboard', AuthController.authenticate, AuthController.dashboard)
+
+router.get('/index', AuthController.index)
+
+router.get('/', AuthController.index)
 
 router.get('/logout', AuthController.logout)
 
@@ -24,11 +28,11 @@ router.post('/checkusername', AuthController.checkUsername)
 router.post('/register', AuthController.validate('createUser'), AuthController.validateUsername, AuthController.register)
 
 router.post('/login', AuthController.validate('loginUser'), AuthController.loginUser, passport.authenticate('login', {
-    successRedirect: '/home',
+    successRedirect: '/dashboard',
     failureRedirect: '/login',
     failureFlash: true
 }), function(req, res) {
-    res.redirect('/home')
+    res.redirect('/dashboard')
 });
 
 module.exports = router
